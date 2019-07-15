@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolPhotosAPI.Web", "CoolPhotosAPI.Web\CoolPhotosAPI.Web.csproj", "{B58FC6AD-C224-49E1-8F6D-EE1F6FD27533}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolPhotosAPI.Web", "CoolPhotosAPI.Web\CoolPhotosAPI.Web.csproj", "{B58FC6AD-C224-49E1-8F6D-EE1F6FD27533}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolPhotosAPI.Data", "CoolPhotosAPI.Data\CoolPhotosAPI.Data.csproj", "{D3F97CDD-7EEA-442C-A3DB-35F4E3AD2B04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolPhotosAPI.BL", "CoolPhotosAPI.BL\CoolPhotosAPI.BL.csproj", "{9847167E-9432-406B-9454-330F63ED459E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{B58FC6AD-C224-49E1-8F6D-EE1F6FD27533}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B58FC6AD-C224-49E1-8F6D-EE1F6FD27533}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B58FC6AD-C224-49E1-8F6D-EE1F6FD27533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3F97CDD-7EEA-442C-A3DB-35F4E3AD2B04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3F97CDD-7EEA-442C-A3DB-35F4E3AD2B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3F97CDD-7EEA-442C-A3DB-35F4E3AD2B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3F97CDD-7EEA-442C-A3DB-35F4E3AD2B04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9847167E-9432-406B-9454-330F63ED459E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9847167E-9432-406B-9454-330F63ED459E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9847167E-9432-406B-9454-330F63ED459E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9847167E-9432-406B-9454-330F63ED459E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
