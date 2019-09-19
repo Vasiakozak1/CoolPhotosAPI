@@ -45,5 +45,10 @@ namespace CoolPhotosAPI.Data.Repositories
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
     }
 }
