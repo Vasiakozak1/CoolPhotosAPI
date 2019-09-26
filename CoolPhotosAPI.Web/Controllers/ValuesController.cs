@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoolPhotosAPI.Web.Controllers
@@ -10,6 +11,10 @@ namespace CoolPhotosAPI.Web.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        public ValuesController(IHostingEnvironment environment)
+        {
+
+        }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

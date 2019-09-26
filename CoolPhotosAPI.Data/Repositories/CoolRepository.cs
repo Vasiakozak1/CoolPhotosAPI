@@ -46,7 +46,7 @@ namespace CoolPhotosAPI.Data.Repositories
         public TType GetSingle(Expression<Func<TType, bool>> predicate)
         {
             return _context.Set<TType>()
-                .Single(predicate);
+                .SingleOrDefault(predicate);
         }
 
         public void Remove(TType entity)
