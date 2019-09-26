@@ -34,6 +34,7 @@ namespace CoolPhotosAPI.Data
                 .WithMany(al => al.Photos)
                 .HasForeignKey(pa => pa.AlbumGuid)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<PhotosAlbumsConnection>()
                 .HasOne(pa => pa.Photo)
                 .WithMany(ph => ph.Albums)
@@ -43,6 +44,7 @@ namespace CoolPhotosAPI.Data
             modelBuilder.Entity<Photo>()
                 .HasKey(ph => ph.Guid)
                 .ForSqlServerIsClustered();
+
             modelBuilder.Entity<Photo>()
                 .HasMany(p => p.Albums)
                 .WithOne(al => al.Photo);
@@ -55,6 +57,7 @@ namespace CoolPhotosAPI.Data
             modelBuilder.Entity<Album>()
                 .HasKey(a => a.Guid)
                 .ForSqlServerIsClustered();
+
             modelBuilder.Entity<Album>()
                 .HasOne(a => a.Owner)
                 .WithMany(u => u.Albums)
@@ -63,6 +66,7 @@ namespace CoolPhotosAPI.Data
 
             modelBuilder.Entity<Comment>()
                 .HasKey(c => c.Guid);
+
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.Album)
                 .WithMany(al => al.Comments)

@@ -11,7 +11,7 @@ namespace CoolPhotosAPI.BL.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
         public UserService(IUnitOfWork unitOfWork)
         {

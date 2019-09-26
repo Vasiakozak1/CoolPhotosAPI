@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static CoolPhotosAPI.BL.CoolPhotosConstants;
 
 namespace CoolPhotosAPI.Web.Controllers
 {
@@ -31,7 +32,7 @@ namespace CoolPhotosAPI.Web.Controllers
             {
                 RedirectUri = Url.Action("HandleGoogleAuthentication", "Account"),
             };
-            properties.Items.Add(CoolPhotosConstants.REDIRECT_URL_KEY, redirectUrl);
+            properties.Items.Add(REDIRECT_URL_KEY, redirectUrl);
 
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
@@ -49,12 +50,13 @@ namespace CoolPhotosAPI.Web.Controllers
                 _userService.CreateUser(authResult.Principal);
             }
             
-            string redirectUrl = authResult.Properties.Items[CoolPhotosConstants.REDIRECT_URL_KEY];
+            string redirectUrl = authResult.Properties.Items[REDIRECT_URL_KEY];
             return Redirect(redirectUrl);
         }
 
+        [Authorize(AuthenticationSchemes = COOL_AUTH_SCHEME)]
+        [HttpGet]
         [Route("[action]")]
-        [Authorize(AuthenticationSchemes = "MainCookie")]
         public IActionResult GetCurrentUserData()
         {
             var claims = User.Claims
@@ -64,7 +66,7 @@ namespace CoolPhotosAPI.Web.Controllers
         }
 
         [Route("[action]")]
-        [Authorize(AuthenticationSchemes = "MainCookie")]
+      //  [Authorize(AuthenticationSchemes = COOL_AUTH_SCHEME)]
         public IActionResult TestAuth()
         {
             return Ok(new { fuckYou = false });

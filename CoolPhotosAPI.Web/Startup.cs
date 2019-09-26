@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Http;
 using CoolPhotosAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using CoolPhotosAPI.BL.Abstract;
+using CoolPhotosAPI.BL.Services;
+using CoolPhotosAPI.Data.Repositories;
+using CoolPhotosAPI.Web.Middlewares;
 
 namespace CoolPhotosAPI.Web
 {
@@ -49,10 +53,15 @@ namespace CoolPhotosAPI.Web
             
             services.AddCors(options => options.AddPolicy("default"
                 , config => config.WithOrigins(_allowedCorsOrigins)
-                                  .AllowCredentials()));
+                                  .AllowCredentials()
+                                  .AllowAnyMethod()
+                                  .AllowAnyHeader()));
 
             services.AddDbContext<CoolDbContext>(options => options
                 .UseSqlServer(Configuration.GetConnectionString("DefaultDb")));
+            services.AddTransient<IUnitOfWork, EFUnitOfWork>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IPhotoService, PhotoService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -69,6 +78,7 @@ namespace CoolPhotosAPI.Web
 
             app.UseCors("default");
 
+            app.UseMiddleware<CatchExceptionsMiddleware>();
             app.UseMvc();
         }
     }
