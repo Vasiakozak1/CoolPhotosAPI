@@ -2,8 +2,9 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CoolPhotosAPI.BL.Abstract;
+using CoolPhotosAPI.BL.ViewModels;
+using CoolPhotosAPI.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static CoolPhotosAPI.BL.CoolPhotosConstants;
@@ -30,6 +31,17 @@ namespace CoolPhotosAPI.Web.Controllers
             string userSocnetworkId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             await _photoService.UploadPhotoAsync(userSocnetworkId, images.GetEnumerator());
             return Ok();
+        }
+
+        [Authorize(AuthenticationSchemes = COOL_AUTH_SCHEME)]
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<IActionResult> GetAllPhotos()
+        {
+            string userSocnetworkId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ICollection<PhotoViewModel> photos = await _photoService.GetAllPhotosAsync(userSocnetworkId);
+
+            return Ok(photos);
         }
     }
 }

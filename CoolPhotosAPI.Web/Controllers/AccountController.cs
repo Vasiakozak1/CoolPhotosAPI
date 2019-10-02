@@ -66,7 +66,7 @@ namespace CoolPhotosAPI.Web.Controllers
         }
 
         [Route("[action]")]
-      //  [Authorize(AuthenticationSchemes = COOL_AUTH_SCHEME)]
+        [Authorize(AuthenticationSchemes = COOL_AUTH_SCHEME)]
         public IActionResult TestAuth()
         {
             return Ok(new { fuckYou = false });

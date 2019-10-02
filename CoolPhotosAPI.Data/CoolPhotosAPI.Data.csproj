@@ -9,7 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="StoredProcedures\SP_GetAllPhotos.sql" />
+    <EmbeddedResource Include="StoredProcedures\SP_GetAllPhotos.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

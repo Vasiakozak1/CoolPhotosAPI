@@ -6,8 +6,12 @@ using CoolPhotosAPI.Data.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CoolPhotosAPI.Data.Entities;
+using CoolPhotosAPI.Data.Abstract;
+using AutoMapper;
+using CoolPhotosAPI.BL.ViewModels;
 
 namespace CoolPhotosAPI.BL.Services
 {
@@ -17,13 +21,17 @@ namespace CoolPhotosAPI.BL.Services
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IUnitOfWork _unitOfWork;
         private readonly string _mediaDirectoryPath;
+        private readonly IMapper _mapper;
         private string _userMediaDirectoryPath;
 
-        public PhotoService(IHostingEnvironment hostingEnvironment, IUnitOfWork unitOfWork)
+        public PhotoService(IHostingEnvironment hostingEnvironment, 
+            ServiceResolver<IInjectableService> resolveService,
+            IMapper mapper)
         {
             _hostingEnvironment = hostingEnvironment;
-            _unitOfWork = unitOfWork;
+            _unitOfWork = resolveService(CoolPhotosConstants.EXTENDED_UNIT_OF_WORK_DI_KEY) as IUnitOfWork;
             _mediaDirectoryPath = Path.Combine(_hostingEnvironment.ContentRootPath, MEDIA_FOLDER_NAME);
+            _mapper = mapper;
         }
 
         public async Task UploadPhotoAsync(string socNetworkId, IEnumerator<IFormFile> formFiles)
@@ -32,11 +40,21 @@ namespace CoolPhotosAPI.BL.Services
             using (formFiles)
             {
                 EnsureFolderForUserFilesCreated(socNetworkId);
+
                 Guid userGuid = _unitOfWork.UserRepo
                     .GetSingle(u => u.SocNetworkId.Equals(socNetworkId)).Guid;
                 await UploadPhotoAsync(userGuid, formFiles);
                 _unitOfWork.SaveChanges();
             }
+        }
+
+        public async Task<ICollection<PhotoViewModel>> GetAllPhotosAsync(string socNetworkId)
+        {
+            ExtendedPhotoRepository photoRepository = _unitOfWork.PhotoRepo as ExtendedPhotoRepository;
+            ICollection<Photo> notMappedPhotos = await photoRepository.GetAllUserPhotosAsync(socNetworkId);
+
+            return notMappedPhotos.Select(p => _mapper.Map<PhotoViewModel>(p))
+                                  .ToList();
         }
 
         private void EnsureFolderForUserFilesCreated(string userSocNetworkId)
@@ -73,6 +91,7 @@ namespace CoolPhotosAPI.BL.Services
                     OwnerGuid = userGuid,
                     Path = uploadingFilePath
                 };
+                
                 _unitOfWork.PhotoRepo.Create(uploadedPhoto);
 
                 await UploadPhotoAsync(userGuid, formFiles);

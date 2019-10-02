@@ -13,6 +13,10 @@ using CoolPhotosAPI.BL.Abstract;
 using CoolPhotosAPI.BL.Services;
 using CoolPhotosAPI.Data.Repositories;
 using CoolPhotosAPI.Web.Middlewares;
+using CoolPhotosAPI.BL;
+using CoolPhotosAPI.Data.Abstract;
+using System;
+using CoolPhotosAPI.Web.Extensions;
 
 namespace CoolPhotosAPI.Web
 {
@@ -50,7 +54,6 @@ namespace CoolPhotosAPI.Web
                     options.ClientId = "134246088596-uaku6mupl8fiogf778uvfi6rkbqoiibd.apps.googleusercontent.com";
                 });
 
-            
             services.AddCors(options => options.AddPolicy("default"
                 , config => config.WithOrigins(_allowedCorsOrigins)
                                   .AllowCredentials()
@@ -60,12 +63,15 @@ namespace CoolPhotosAPI.Web
             services.AddDbContext<CoolDbContext>(options => options
                 .UseSqlServer(Configuration.GetConnectionString("DefaultDb")));
             services.AddTransient<IUnitOfWork, EFUnitOfWork>();
+            services.AddTransient<ExtendedUnitOfWork>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPhotoService, PhotoService>();
+            services.AddMapper();
+            services.AddServiceResolver();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
-
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -80,6 +86,6 @@ namespace CoolPhotosAPI.Web
 
             app.UseMiddleware<CatchExceptionsMiddleware>();
             app.UseMvc();
-        }
+        }        
     }
 }

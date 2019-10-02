@@ -1,9 +1,10 @@
-﻿using CoolPhotosAPI.Data.Entities;
+﻿using CoolPhotosAPI.Data.Abstract;
+using CoolPhotosAPI.Data.Entities;
 using System;
 
 namespace CoolPhotosAPI.Data.Repositories
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork: IInjectableService
     {
         IRepository<CoolAppUser> UserRepo { get; }
 

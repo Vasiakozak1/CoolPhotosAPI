@@ -9,7 +9,7 @@ namespace CoolPhotosAPI.Data.Repositories
 {
     public class CoolRepository<TType> : IRepository<TType> where TType : Entity
     {
-        DbContext _context;
+        protected DbContext _context;
         public CoolRepository(DbContext context)
         {
             _context = context;

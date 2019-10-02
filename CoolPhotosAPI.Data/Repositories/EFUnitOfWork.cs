@@ -6,16 +6,13 @@ namespace CoolPhotosAPI.Data.Repositories
 {
     public class EFUnitOfWork : IUnitOfWork, IDisposable
     {
-        private CoolDbContext _context;
+        private readonly CoolDbContext _context;
         private IRepository<CoolAppUser> _userRepo;
         private IRepository<Photo> _photoRepo;
         private IRepository<Album> _albumRepo;
         private IRepository<Comment> _commentRepo;
 
-        public EFUnitOfWork(CoolDbContext context)
-        {
-            _context = context;
-        }
+        public EFUnitOfWork(CoolDbContext context) => _context = context;
 
         public IRepository<CoolAppUser> UserRepo
         {
@@ -69,7 +66,6 @@ namespace CoolPhotosAPI.Data.Repositories
         {
             _context.Database.CloseConnection();
             _context.Dispose();
-            _context = null;
             GC.SuppressFinalize(this);
         }
 
