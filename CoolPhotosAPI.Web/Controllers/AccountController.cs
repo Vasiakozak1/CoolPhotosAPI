@@ -43,7 +43,8 @@ namespace CoolPhotosAPI.Web.Controllers
             AuthenticateResult authResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
             IIdentity userIdentity = authResult.Principal.Identity;
             await HttpContext.SignInAsync("MainCookie", new ClaimsPrincipal(userIdentity));
-
+            await HttpContext.SignInAsync("ChatCookieAuthScheme", new ClaimsPrincipal(userIdentity));
+            
             string userSocNetworkIdentifier = authResult.Principal.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (_userService.UserDoesntExist(userSocNetworkIdentifier))
             {

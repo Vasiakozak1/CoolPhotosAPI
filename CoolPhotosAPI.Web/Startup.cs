@@ -17,12 +17,15 @@ using CoolPhotosAPI.BL;
 using CoolPhotosAPI.Data.Abstract;
 using System;
 using CoolPhotosAPI.Web.Extensions;
+using Microsoft.AspNetCore.DataProtection;
+using System.IO;
 
 namespace CoolPhotosAPI.Web
 {
     public class Startup
     {
         private const string ALLOWED_CORS_ORIGINS_CONFIG_KEY = "AllowedCorsOrigins";
+        private const string CHAT_SERVICE_DOMAIN_KEY = "ChatServiceDomain";
 
         private string[] _allowedCorsOrigins;
         public Startup(IConfiguration configuration)
@@ -39,6 +42,10 @@ namespace CoolPhotosAPI.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)))
+                .SetApplicationName("CoolPhotosApp");
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie("MainCookie", options =>
                 {
@@ -52,6 +59,15 @@ namespace CoolPhotosAPI.Web
                     options.SignInScheme = "MainCookie";
                     options.ClientSecret = "hr01KhHZ5Ydcc8URZBfOTmaB";
                     options.ClientId = "134246088596-uaku6mupl8fiogf778uvfi6rkbqoiibd.apps.googleusercontent.com";
+                })
+                .AddCookie("ChatCookieAuthScheme", options =>
+                {
+                    // options.Cookie.Domain = "localhost:44399";
+          //          options.Cookie.Path = "localhost:44399/";
+                    options.Cookie.Name = ".AspNet.ChatCookie";
+                    options.Cookie.SameSite = SameSiteMode.None;
+                    options.DataProtectionProvider = DataProtectionProvider
+                        .Create(new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
                 });
 
             services.AddCors(options => options.AddPolicy("default"
@@ -66,6 +82,7 @@ namespace CoolPhotosAPI.Web
             services.AddTransient<ExtendedUnitOfWork>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPhotoService, PhotoService>();
+            
             services.AddMapper();
             services.AddServiceResolver();
 
